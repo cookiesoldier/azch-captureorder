@@ -14,7 +14,7 @@ spec:
       spec:
         containers:
         - name: captureorder
-          image: uniqueacrname.azurecr.io/captureorder # replace with your own repository
+          image: azch/captureorder
           imagePullPolicy: Always
           readinessProbe:
             httpGet:
@@ -26,28 +26,19 @@ spec:
               path: /healthz
           resources:
             requests:
-              memory: "64Mi"
+              memory: "128Mi"
               cpu: "100m"
             limits:
-              memory: "128Mi"
+              memory: "256Mi"
               cpu: "500m"
           env:
           - name: TEAMNAME
-            value: 'placeholder' # will be patched at deployment time by value of 'teamName' in the variable group
+            value: "team-samsoe"
           - name: MONGOHOST
-            valueFrom:
-              secretKeyRef:
-                name: mongodb
-                key: mongoHost
+            value: "orders-mongo-mongodb.default.svc.cluster.local"
           - name: MONGOUSER
-            valueFrom:
-              secretKeyRef:
-                name: mongodb
-                key: mongoUser
+            value: "orders-user"
           - name: MONGOPASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mongodb
-                key: mongoPassword
+            value: "orders-password"
           ports:
-          - containerPort: 80
+          - containerPort: 8080
